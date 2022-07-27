@@ -6,8 +6,10 @@ import com.example.shavermacloud.ShavermaOrder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 
@@ -54,7 +56,10 @@ public class DesignShavermaController {
     }
 
     @PostMapping
-    public String processShaverma(Shaverma shaverma, @ModelAttribute ShavermaOrder shavermaOrder){
+    public String processShaverma(@Valid Shaverma shaverma, Errors errors, @ModelAttribute ShavermaOrder shavermaOrder){
+        if (errors.hasErrors()){
+            return "design";
+        }
         shavermaOrder.addShaverma(shaverma);
         log.info("Processing shaverma: {}", shaverma);
 
